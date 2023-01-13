@@ -19,7 +19,7 @@ resource "aws_lambda_function" "cron_loader" {
       aws_region = var.aws_region
       weather_application_key_name = "${local.service_name}/application_key"
       weather_api_key_name = "${local.service_name}/api_key"
-      weather_observation_bucket_name = aws_s3_bucket.observation_data.name
+      weather_observation_bucket_name = aws_s3_bucket.observation_data.id
     }
   }
   
