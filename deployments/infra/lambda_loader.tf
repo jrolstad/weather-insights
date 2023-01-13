@@ -13,6 +13,7 @@ resource "aws_lambda_function" "cron_loader" {
   handler           = "main"
   source_code_hash  = filebase64sha256(data.archive_file.cron_lambda_zip.output_path)
   runtime           = "go1.x"
+  timeout           = 600
 
   environment {
     variables = {
