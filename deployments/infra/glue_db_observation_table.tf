@@ -1,4 +1,4 @@
-esource "aws_glue_catalog_table" "observeration" {
+resource "aws_glue_catalog_table" "observeration" {
   name          = "observation"
   database_name = aws_glue_catalog_database.object_db.name
 
