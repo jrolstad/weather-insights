@@ -22,21 +22,21 @@ type PressureObservation struct {
 }
 
 type HumidityObservation struct {
-	Dewpoint        float64
-	DewpointIndoor  float64
-	Humidity        int
-	HumidityIndoors int
+	Dewpoint       float64
+	DewpointIndoor float64
+	Humidity       int
+	HumidityIndoor int
 }
 
 type TemperatureObservation struct {
-	TemperatureFeelsLike         float64
-	TemperatureFeelsLikeIndoors  float64
-	TemperatureFahrenheit        float64
-	TemperatureFahrenheitInddors float64
+	FeelsLike        float64
+	FeelsLikeIndoor  float64
+	Fahrenheit       float64
+	FahrenheitIndoor float64
 }
 
 type AirQualityObservation struct {
-	Pm25Inddor      int
+	Pm25Indoor      int
 	Pm25DailyIndoor int
 	Pm25            float64
 	Pm25Daily       float64
@@ -48,25 +48,24 @@ type SolarObservation struct {
 }
 
 type WindObservation struct {
-	WindDirection                 int
-	WindGust                      float64
-	WindGustDirection             int
-	WindSpeed                     float64
-	WindDirectionAverage2Minutes  int
-	WindSpeedAverage2Minutes      float64
-	WindDirectionAverage10Minutes int
-	WindSpeedAverage10Minutes     float64
-	MaxDailyGust                  float64
+	Direction                 int
+	Gust                      float64
+	GustDirection             int
+	Speed                     float64
+	DirectionAverage2Minutes  int
+	SpeedAverage2Minutes      float64
+	DirectionAverage10Minutes int
+	SpeedAverage10Minutes     float64
+	MaxDailyGust              float64
 }
 
 type RainObservation struct {
-	DailyRain    float64
-	EventRain    float64
-	HourlyRain   float64
-	LastRain     time.Time
-	MonthlyRain  float64
-	TotalRain    float64
-	YearlyRain   float64
-	WeeklyRain   float64
-	MaxDailyGust float64
+	Daily      float64
+	Event      float64
+	Hourly     float64
+	LastRainAt time.Time
+	Monthly    float64
+	Total      float64
+	Yearly     float64
+	Weekly     float64
 }
