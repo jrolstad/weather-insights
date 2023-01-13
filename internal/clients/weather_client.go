@@ -9,7 +9,7 @@ import (
 
 type WeatherDataClient interface {
 	GetWeatherStations() ([]*models.WeatherStation, error)
-	GetObservations(stationId string, start time.Time, end time.Time) ([]*models.Observation, error)
+	GetObservations(station *models.WeatherStation, start time.Time, end time.Time) ([]*models.Observation, error)
 }
 
 func NewWeatherDataClient(appConfig *config.AppConfig, secretClient SecretClient) (WeatherDataClient, error) {
@@ -24,11 +24,13 @@ func NewWeatherDataClient(appConfig *config.AppConfig, secretClient SecretClient
 
 	return &AmbientWeatherClient{
 		authenticationKey: ambient.NewKey(applicationKey, apiKey),
+		queryLimit:        288, //This is the max allowed
 	}, nil
 }
 
 type AmbientWeatherClient struct {
 	authenticationKey ambient.Key
+	queryLimit        int64
 }
 
 func (c *AmbientWeatherClient) GetWeatherStations() ([]*models.WeatherStation, error) {
@@ -43,8 +45,14 @@ func (c *AmbientWeatherClient) GetWeatherStations() ([]*models.WeatherStation, e
 	return mappedData, nil
 }
 
-func (c *AmbientWeatherClient) GetObservations(stationId string, start time.Time, end time.Time) ([]*models.Observation, error) {
-	return make([]*models.Observation, 0), nil
+func (c *AmbientWeatherClient) GetObservations(station *models.WeatherStation, start time.Time, end time.Time) ([]*models.Observation, error) {
+	data, err := ambient.DeviceMac(c.authenticationKey, station.MacAddress, end, c.queryLimit)
+	if err != nil {
+		return make([]*models.Observation, 0), err
+	}
+
+	mappedData := mapObservations(station, data.Record)
+	return mappedData, nil
 }
 
 func mapDevices(toMap []ambient.DeviceRecord) []*models.WeatherStation {
@@ -66,5 +74,59 @@ func mapDevice(toMap ambient.DeviceRecord) *models.WeatherStation {
 		MacAddress: toMap.Macaddress,
 		Name:       toMap.Info.Name,
 		Location:   toMap.Info.Location,
+	}
+}
+
+func mapObservations(source *models.WeatherStation, toMap []ambient.Record) []*models.Observation {
+	result := make([]*models.Observation, 0)
+	if toMap == nil {
+		return result
+	}
+
+	for _, item := range toMap {
+		mappedItem := mapObservation(source, item)
+		result = append(result, mappedItem)
+	}
+
+	return result
+}
+
+func mapObservation(source *models.WeatherStation, toMap ambient.Record) *models.Observation {
+	return &models.Observation{
+		Station:                       source,
+		At:                            toMap.Date,
+		Barometer:                     toMap.Baromabsin,
+		DailyRain:                     toMap.Dailyrainin,
+		Dewpoint:                      toMap.Dewpoint,
+		DewpointIndoor:                toMap.Dewpointin,
+		EventRain:                     toMap.Eventrainin,
+		TemperatureFeelsLike:          toMap.Feelslike,
+		TemperatureFeelsLikeIndoors:   toMap.Feelslikein,
+		HourlyRain:                    toMap.Hourlyrainin,
+		Humidity:                      toMap.Humidity,
+		HumidityIndoors:               toMap.Humidityin,
+		LastRain:                      toMap.LastRain,
+		MaxDailyGust:                  toMap.Maxdailygust,
+		Pm25:                          toMap.Pm25,
+		Pm25Daily:                     toMap.Pm25_24h,
+		MonthlyRain:                   toMap.Monthlyrainin,
+		SolarRadiation:                toMap.Solarradiation,
+		TemperatureFahrenheit:         toMap.Tempf,
+		TemperatureFahrenheitInddors:  toMap.Tempinf,
+		TotalRain:                     toMap.Totalrainin,
+		UvIndex:                       toMap.Uv,
+		WeeklyRain:                    toMap.Weeklyrainin,
+		WindDirection:                 toMap.Winddir,
+		WindGust:                      toMap.Windgustmph,
+		WindGustDirection:             toMap.Windgustdir,
+		WindSpeed:                     toMap.Windspeedmph,
+		WindDirectionAverage2Minutes:  toMap.Winddir_avg2m,
+		WindSpeedAverage2Minutes:      toMap.Windspdmph_avg2m,
+		WindDirectionAverage10Minutes: toMap.Winddir_avg10m,
+		WindSpeedAverage10Minutes:     toMap.Windspdmph_avg10m,
+		YearlyRain:                    toMap.Yearlyrainin,
+		Pm25Inddor:                    toMap.Aqi_pm25_in,
+		Pm25DailyIndoor:               toMap.Aqi_pm25_in_24h,
+		RawData:                       toMap,
 	}
 }

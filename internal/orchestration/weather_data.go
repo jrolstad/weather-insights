@@ -33,7 +33,7 @@ func getObservations(station *models.WeatherStation,
 	observationRepository repositories.ObservationRepository) error {
 
 	logging.LogInfo("Obtaining observations from station", "mac", station.MacAddress, "name", station.Name)
-	observations, err := weatherDataClient.GetObservations(station.MacAddress, start, end)
+	observations, err := weatherDataClient.GetObservations(station, start, end)
 	if err != nil {
 		return err
 	}
