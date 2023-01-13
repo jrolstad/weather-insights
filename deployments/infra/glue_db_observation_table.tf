@@ -47,5 +47,25 @@ resource "aws_glue_catalog_table" "observeration" {
       name="temperature"
       type="struct<feelslike:float,feelslikeindoor:float,fahrenheit:float,fahrenheitindoor:float>"
     }
+
+    columns {
+      name="airquality"
+      type="struct<pm25:float,pm25indoor:float,pm25daily:float,pm25dailyindoor:float>"
+    }
+
+    columns {
+      name="solar"
+      type="struct<solarradiation:float,uvindex:float>"
+    }
+
+    columns {
+      name="wind"
+      type="struct<direction:float,gust:float,gustdirection:float,speed:float,directionaverage2minutes:float,speedaverage2minutes:float,directionaverage10minutes:float,speedaverage10minutes:float,maxdailygust:float>"
+    }
+
+    columns {
+      name="rain"
+      type="struct<daily:float,event:float,hourly:float,monthly:float,total:float,yearly:float,weekly:float>"
+    }
   }
 }
