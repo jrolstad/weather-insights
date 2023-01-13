@@ -1,0 +1,26 @@
+select
+    station.name as StationName,
+    station.macaddress as StationAddress,
+    cast(from_iso8601_timestamp(at) as date) as ObservedAt,
+    max(rain.daily) as TotalRain,
+    max(temperature.fahrenheit) as MaxTemperature,
+    min(temperature.fahrenheit) as MinTemperature,
+    max(temperature.fahrenheit) - min(temperature.fahrenheit) as TemperatureDiff,
+    max(wind.speed) as MaxWindSpeed,
+    min(wind.speed) as MinWindSpeed,
+    max(wind.gust) as MaxWindGust,
+    max(pressure.barometer) as MaxBarometricPressure,
+    min(pressure.barometer) as MinBarometricPressure,
+    max(pressure.barometer) - min(pressure.barometer) as BarometricPressureDiff,
+    max(humidity.humidity) as MaxHumidity,
+    min(humidity.humidity) as MinHumidity,
+    max(humidity.humidity) - min(humidity.humidity) as HumidityDiff,
+    max(humidity.dewpoint) as MaxDewpoint,
+    min(humidity.dewpoint) as MinDewpoint,
+    max(humidity.dewpoint) - min(humidity.dewpoint) as DewpointDiff,
+    max(solar.solarradiation) as MaxSolarRadiation,
+    min(solar.solarradiation) as MinSolarRadiation,
+    max(solar.uvindex) as MaxUvIndex,
+    min(solar.uvindex) as MinUvIndex
+from observation
+group by cast(from_iso8601_timestamp(at) as date), station.name, station.macaddress
