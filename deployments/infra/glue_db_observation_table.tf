@@ -32,5 +32,20 @@ resource "aws_glue_catalog_table" "observeration" {
       name = "station"
       type = "struct<macaddress:string,name:string>"
     }
+
+    columns {
+      name="pressure"
+      type="struct<barometer:float>"
+    }
+
+    columns {
+      name="humidity"
+      type="struct<dewpoint:float,humidity:float,dewpointindoor:float,humidityindoor:float>"
+    }
+
+    columns {
+      name="temperature"
+      type="struct<feelslike:float,feelslikeindoor:float,fahrenheit:float,fahrenheitindoor:float>"
+    }
   }
 }
