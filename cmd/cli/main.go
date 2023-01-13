@@ -19,7 +19,7 @@ func main() {
 	if err != nil {
 		logging.LogPanic(err)
 	}
-	repository := repositories.NewObservationRepository()
+	repository := repositories.NewObservationRepository(appConfig)
 
 	err = orchestration.GetWeatherData(start, end, client, repository)
 	if err != nil {
