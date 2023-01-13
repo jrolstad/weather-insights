@@ -9,7 +9,7 @@ resource "aws_glue_catalog_table" "observeration" {
   }
 
   storage_descriptor {
-    location      = "s3://${local.observation_bucket_name}"
+    location      = "s3://${local.observation_bucket_name}/data"
     input_format  = "org.apache.hadoop.mapred.TextInputFormat"
     output_format = "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat"
 

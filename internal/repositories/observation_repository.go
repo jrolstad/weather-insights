@@ -76,7 +76,7 @@ func (r *S3ObservationRepository) resolveItemPath(item *models.Observation) stri
 		return "unknown"
 	}
 
-	return strings.ToLower(item.Station.MacAddress)
+	return fmt.Sprintf("data/%s", strings.ToLower(item.Station.MacAddress))
 }
 
 func (r *S3ObservationRepository) resolveItemId(item *models.Observation) string {
