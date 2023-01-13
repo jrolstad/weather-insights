@@ -15,12 +15,15 @@ func main() {
 
 	appConfig := config.NewAppConfig()
 	secretClient := clients.NewSecretClient(appConfig)
-	client := clients.NewWeatherDataClient(secretClient)
+	client, err := clients.NewWeatherDataClient(appConfig, secretClient)
+	if err != nil {
+		logging.LogPanic(err)
+	}
 	repository := repositories.NewObservationRepository()
 
-	err := orchestration.GetWeatherData(start, end, client, repository)
+	err = orchestration.GetWeatherData(start, end, client, repository)
 	if err != nil {
-		logging.LogError(err)
+		logging.LogPanic(err)
 	}
 
 	logging.LogInfo("GetWeatherData Complete", "start", start.String(), "end", end.String())
