@@ -24,6 +24,7 @@ func init() {
 	appConfig = config.NewAppConfig()
 	secretClient = clients.NewSecretClient(appConfig)
 	weatherClient, err = clients.NewWeatherDataClient(appConfig, secretClient)
+
 	if err != nil {
 		logging.LogError(err)
 	}

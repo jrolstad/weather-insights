@@ -2,6 +2,7 @@ package orchestration
 
 import (
 	"github.com/jrolstad/weather-insights/internal/clients"
+	"github.com/jrolstad/weather-insights/internal/core"
 	"github.com/jrolstad/weather-insights/internal/logging"
 	"github.com/jrolstad/weather-insights/internal/models"
 	"github.com/jrolstad/weather-insights/internal/repositories"
@@ -15,15 +16,19 @@ func GetWeatherData(start time.Time,
 
 	stations, err := weatherDataClient.GetWeatherStations()
 	if err != nil {
-		logging.LogError(err)
+		return err
 	}
 
+	processingErrors := make([]error, 0)
 	for _, item := range stations {
 		waitForApiThrottling()
-		getObservations(item, start, end, weatherDataClient, dataRepository)
+		err = getObservations(item, start, end, weatherDataClient, dataRepository)
+		if err != nil {
+			processingErrors = append(processingErrors, err)
+		}
 	}
 
-	return nil
+	return core.ConsolidateErrors(processingErrors)
 }
 
 func getObservations(station *models.WeatherStation,
