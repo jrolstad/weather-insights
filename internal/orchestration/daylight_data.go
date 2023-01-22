@@ -19,6 +19,8 @@ func GetDaylightData(date time.Time,
 		return err
 	}
 
+	logging.LogInfo("Obtaining daylight times for weather stations", "station_count", len(stations))
+
 	processingErrors := make([]error, 0)
 	for _, station := range stations {
 		logging.LogInfo("Processing daylight times for weather station", "macaddress", station.MacAddress, "name", station.Name)
