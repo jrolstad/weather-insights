@@ -21,6 +21,7 @@ resource "aws_lambda_function" "cron_loader" {
       weather_application_key_name = "${local.service_name}/application_key"
       weather_api_key_name = "${local.service_name}/api_key"
       weather_observation_bucket_name = aws_s3_bucket.observation_data.id
+      weather_sunrise_sunset_base_uri = "https://api.sunrise-sunset.org"
     }
   }
   
