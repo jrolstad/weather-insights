@@ -25,5 +25,7 @@ To install, configure, and collect data so it is available for analysis, follow 
 ## Analytics
 When data is collected, use the [scripts/analysis](scripts/analysis) to extract data either locally or to a Tableau Server so it is available for the pre-built dashboards at [scripts/tableau/workbooks](scripts/tableau/workbooks/).
 
+A working example is built at [Weather Data Analytics](https://public.tableau.com/app/profile/josh.rolstad/viz/BrierHouseWeatherData/BrierHouseData) using Tableau Public.
+
 # License
 This projects is made available under the [MIT License](LICENSE).
