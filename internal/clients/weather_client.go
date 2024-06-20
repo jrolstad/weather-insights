@@ -74,6 +74,15 @@ func mapDevice(toMap ambient.DeviceRecord) *models.WeatherStation {
 		MacAddress: toMap.Macaddress,
 		Name:       toMap.Info.Name,
 		Location:   toMap.Info.Location,
+		//TODO: Add the following once the ambient package is updated to the latest version
+		/*
+			Location: toMap.Info.LocationInfo.Location
+			Address: toMap.Info.LocationInfo.Address,
+			Elevation: toMap.Info.LocationInfo.Elevation
+			Latitude: toMap.Info.LocationInfo.Coords.Lat
+			Longitude: toMap.Info.LocationInfo.Coords.Lon
+		*/
+
 	}
 }
 
