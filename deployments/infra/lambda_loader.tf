@@ -12,7 +12,8 @@ resource "aws_lambda_function" "cron_loader" {
   filename          = data.archive_file.cron_lambda_zip.output_path
   handler           = "main"
   source_code_hash  = filebase64sha256(data.archive_file.cron_lambda_zip.output_path)
-  runtime           = "go1.x"
+  runtime          = "provided.al2"
+  architectures    = ["arm64"]
   timeout           = 600
 
   environment {
