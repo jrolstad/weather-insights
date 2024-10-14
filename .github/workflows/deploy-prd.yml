@@ -28,7 +28,7 @@ jobs:
         run: go mod download
 
       - name: Build Loader
-        run: GOOS=linux go build -o main
+        run: GOOS=linux GOARCH=arm64 go build -o main
         working-directory: ./cmd/lambda/cron_loader
 
       - name: Setup Terraform
